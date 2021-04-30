@@ -68,4 +68,38 @@ Class PdoMysql {
 		return $cidade;
 	}
 	
+	public function findAllCidade(){
+		$lPdo = $this->getInstance();
+  
+		$stmt = $lPdo->prepare("SELECT
+								id, nome
+							FROM
+								cidade
+							ORDER BY
+								nome
+								");
+					  
+		$stmt->execute();
+		
+		$cidade = $stmt->fetchAll(\PDO::FETCH_ASSOC);;
+		return $cidade;
+	}
+	
+	public function findAllCategoria(){
+		$lPdo = $this->getInstance();
+  
+		$stmt = $lPdo->prepare("SELECT
+								id, nome
+							FROM
+								categoria
+							ORDER BY
+								nome
+								");
+					  
+		$stmt->execute();
+		
+		$categoria = $stmt->fetchAll(\PDO::FETCH_ASSOC);;
+		return $categoria;
+	}
+	
 }

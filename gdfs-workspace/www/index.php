@@ -4,8 +4,12 @@ $model = new PdoMysql();
 
 $ok = $model->checkConexao();
 
-$nomeCidade = utf8_encode($model->getCidadeNome()['nome'][0]);
-
+//$nomeCidade = utf8_encode($model->getCidadeNome()['nome'][0]);
+/**
+echo "<pre>";
+print_r($model->findAllCidade());
+echo "</pre>";
+/**/
 ?>
 <!doctype html>
 <html lang="pt_BR">
@@ -14,6 +18,7 @@ $nomeCidade = utf8_encode($model->getCidadeNome()['nome'][0]);
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/custom.css">
     <title>Gaudium Software - Prova Desenvolvedor Full Stack</title>
 </head>
 <body>
@@ -25,31 +30,47 @@ $nomeCidade = utf8_encode($model->getCidadeNome()['nome'][0]);
         <div class="row">
             <h2 class="mx-auto">Prova Desenvolvedor Full Stack</h2>
         </div>
-        <div class="row pt-5">
-            <div class="jumbotron mx-auto">
-                <?php if ($ok) { ?>
-                    <div class="alert alert-success mx-auto" role="alert">
-                        Ambiente instalado com sucesso!
-                    </div>
-                <?php } else { ?>
-                    <div class="alert alert-danger mx-auto" role="alert">
-                        Não foi possível conectar ao banco de dados.
-                    </div>
-                <?php } ?>
-            </div>
-        </div>
-		<div class="row">
-            <div class="jumbotron mx-auto">
-                <?php if ($ok) { ?>
-                    <div class="alert alert-success mx-auto" role="alert">
-                        Rodando da cidade: <?php echo $nomeCidade; ?>
-                    </div>
-                <?php } else { ?>
-                    <div class="alert alert-danger mx-auto" role="alert">
-                        Não foi possível conectar ao banco de dados.
-                    </div>
-                <?php } ?>
-            </div>
+		<div class="row mt-5">
+			<div class="col-sm container_form">
+				<form>
+				  <div class="mb-3">
+					<label for="selectCidades" class="form-label">Cidades</label>
+					<select class="form-control" id="selectCidades">
+						<?php
+							$cidades = $model->findAllCidade();
+							foreach($cidades as $cidade):
+						?>
+							<option value="<?php echo $cidade['id'];?>"><?php echo utf8_encode($cidade['nome']);?></option>
+						<?php endforeach;?>
+					</select>
+				  </div>
+				  <div class="mb-3">
+					<label for="selectCategorias" class="form-label">Categorias</label>
+					<select class="form-control" id="selectCategorias">
+						<?php
+							$categorias = $model->findAllCategoria();
+							foreach($categorias as $categoria):
+						?>
+							<option value="<?php echo $categoria['id'];?>"><?php echo utf8_encode($categoria['nome']);?></option>
+						<?php endforeach;?>
+					</select>
+				  </div>
+				  <div class="mb-3">
+					<label for="inputEndOrigem" class="form-label">Endereço de Origem</label>
+					<input type="text" class="form-control" id="inputEndOrigem">
+				  </div>
+				  <div class="mb-3">
+					<label for="inputEndDestino" class="form-label">Endereço de Destino</label>
+					<input type="text" class="form-control" id="inputEndDestino">
+				  </div>
+				  <button type="submit" class="btn btn-primary" id="btnExecutar">Executar Estimativa</button>
+				</form>				
+			</div>            
+			<div class="col-sm container_estimativa">
+				<p>
+					Em Rio de Janeiro, carro executivo, de Rua da Assembléia, 10 para Rua Barata Ribeiro, 30, às 10:34: <b>R$ 23,15</b>.
+				</p>
+			</div>            
         </div>
     </div> <!-- /container -->
 </main>
