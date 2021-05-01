@@ -31,7 +31,7 @@ echo "</pre>";
             <h2 class="mx-auto">Prova Desenvolvedor Full Stack</h2>
         </div>
 		<div class="row mt-5">
-			<div class="col-sm container_form">
+			<div class="col-md-4 container_form">
 				<form>
 				  <div class="mb-3">
 					<label for="selectCidades" class="form-label">Cidades</label>
@@ -68,7 +68,7 @@ echo "</pre>";
 				  <button type="submit" class="btn btn-primary" id="btnExecutar">Executar Estimativa</button>
 				</form>				
 			</div>            
-			<div class="col-sm container_estimativa">
+			<div class="col-md-6 ml-auto container_estimativa">
 				<p>
 					Em Rio de Janeiro, carro executivo, de Rua da Assembléia, 10 para Rua Barata Ribeiro, 30, às 10:34: <b>R$ 23,15</b>.
 				</p>
