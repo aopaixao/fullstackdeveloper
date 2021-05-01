@@ -8,5 +8,10 @@ class Categoria
 		$model = new PdoMysql();
 		return $model->findAllCategoria();
 	}
+	
+	public function getNomeCategoriaById($idCategoria){
+		$model = new PdoMysql();
+		return $model->getNomeCategoriaById($idCategoria);
+	}
 }
 

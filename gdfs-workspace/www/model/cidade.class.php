@@ -13,5 +13,10 @@ class Cidade
 		$model = new PdoMysql();
 		return $model->getDadosCalculoTarifa($idCidade, $idCategoria);
 	}
+	
+	public function getNomeCidadeById($idCidade){
+		$model = new PdoMysql();
+		return $model->getNomeCidadeById($idCidade);
+	}
 }
 

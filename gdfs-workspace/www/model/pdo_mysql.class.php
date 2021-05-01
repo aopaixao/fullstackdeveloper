@@ -121,6 +121,40 @@ Class PdoMysql {
 		return $dados;
 	}
 	
+	public function getNomeCategoriaById($idCategoria){
+		$lPdo = $this->getInstance();
+  
+		$stmt = $lPdo->prepare("SELECT
+								nome
+							FROM
+								categoria
+							WHERE 
+								id = $idCategoria
+								");
+					  
+		$stmt->execute();
+		
+		$dados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+		return $dados;
+	}
+	
+	public function getNomeCidadeById($idCidade){
+		$lPdo = $this->getInstance();
+  
+		$stmt = $lPdo->prepare("SELECT
+								nome
+							FROM
+								cidade
+							WHERE 
+								id = $idCidade
+								");
+					  
+		$stmt->execute();
+		
+		$dados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+		return $dados;
+	}
+	
 	public function postHistorico($vrBandeirada, $vrHora, $duracao, $vrKm, $distancia, $dataHoraAtual, $tarifa, $idCidade, $idCategoria, $endOrigem, $endDestino ){
 		$lPdo = $this->getInstance();
 		
@@ -130,9 +164,6 @@ Class PdoMysql {
 		";
 		
 		$rowsInsert = $lPdo->exec($query);   
-		
-		return $rowsInsert;
-		
 	}
 	
 }

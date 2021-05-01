@@ -1,10 +1,16 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once(realpath(dirname(__FILE__)) . "/../model/cidade.class.php");
+require_once(realpath(dirname(__FILE__)) . "/../model/categoria.class.php");
 require_once(realpath(dirname(__FILE__)) . "/../model/pdo_mysql.class.php");
 date_default_timezone_set('America/Sao_Paulo');
 
 $objCalculo = new Calculo();
-$objCalculo->preparaCalculo($_POST);
+$post = json_decode($_POST['post_data'], true);
+$objCalculo->preparaCalculo($post);
 
 Class Calculo{
 
@@ -18,33 +24,50 @@ Class Calculo{
 		$duracao     = rand (0,60);
 		
 		$objCidade = new Cidade();
-		$dadosCalculo = $objCidade->getDadosCalculoTarifa(1, 1);
+		$objCategoria = new Categoria();
+		$dadosCalculo = null;
+		$dadosCalculo = $objCidade->getDadosCalculoTarifa($idCidade, $idCategoria);
+		$dataHoraAtual = date('Y/m/d H:i:s');
+		$horaAtual = date('H:i');
 		
-		$vrBandeirada = $dadosCalculo[0]['vr_bandeirada'];
-		$vrHora       = $dadosCalculo[0]['vr_hora'];
-		$vrKm         = $dadosCalculo[0]['vr_km'];
+		$json = null;
 		
-		$tarifa = $this->executaCalculo($vrBandeirada, $vrHora, $duracao, $vrKm, $distancia, $idCidade, $idCategoria, $endOrigem, $endDestino);
-		
-		$json = array(
-			'id_cidade' => $idCidade,
-			'id_categoria' => $idCategoria,
-			'end_origem' => $endOrigem,
-			'end_destino' => $endDestino,
-			'distancia' => $distancia,
-			'duracao'   => $duracao,
-			'vr_bandeirada'   => $vrBandeirada,
-			'vr_hora'   => $vrHora,
-			'vr_km'   => $vrKm,
-			'vr_calculado'   => $tarifa,
-		);
+		if(!isset($dadosCalculo) || !count($dadosCalculo) > 0){
+			$json = array(
+			'erro' => 'A combinação de Cidade e Categoria selecionados não existe.'
+			);
+		}else{
+			$vrBandeirada = $dadosCalculo[0]['vr_bandeirada'];
+			$vrHora       = $dadosCalculo[0]['vr_hora'];
+			$vrKm         = $dadosCalculo[0]['vr_km'];
+			
+			$tarifa = $this->executaCalculo($vrBandeirada, $vrHora, $duracao, $vrKm, $distancia, $idCidade, $idCategoria, $endOrigem, $endDestino, $dataHoraAtual);
+			
+			$nomeCidade    = utf8_encode($objCidade->getNomeCidadeById($idCidade)[0]['nome']);
+			$nomeCategoria = utf8_encode($objCategoria->getNomeCategoriaById($idCategoria)[0]['nome']);
+			
+			$json = array(
+				'id_cidade' => $idCidade,
+				'nome_cidade' => $nomeCidade,
+				'id_categoria' => $idCategoria,
+				'nome_categoria' => $nomeCategoria,
+				'end_origem' => $endOrigem,
+				'end_destino' => $endDestino,
+				'distancia' => $distancia,
+				'duracao'   => $duracao,
+				'vr_bandeirada'   => $vrBandeirada,
+				'vr_hora'   => $vrHora,
+				'vr_km'   => $vrKm,
+				'vr_calculado'   => $tarifa,
+				'hora_atual'   => $horaAtual,
+			);
+		}
 		
 		echo json_encode($json);
 	}
 
-	private function executaCalculo($vrBandeirada, $vrHora, $duracao, $vrKm, $distancia, $idCidade, $idCategoria, $endOrigem, $endDestino){
+	private function executaCalculo($vrBandeirada, $vrHora, $duracao, $vrKm, $distancia, $idCidade, $idCategoria, $endOrigem, $endDestino, $dataHoraAtual){
 		$tarifa = null;
-		$dataHoraAtual = date('Y/m/d H:i:s');
 		
 		$tarifa = $vrBandeirada + ($vrHora * $duracao) + ($vrKm * $distancia);
 

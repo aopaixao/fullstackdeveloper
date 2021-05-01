@@ -36,6 +36,7 @@ echo "</pre>";
 				  <div class="mb-3">
 					<label for="selectCidades" class="form-label">Cidades</label>
 					<select class="form-control" id="selectCidades" name="id_cidade">
+						<option value="0">Selecione a Cidade</option>
 						<?php
 							$cidades = $model->findAllCidade();
 							foreach($cidades as $cidade):
@@ -47,6 +48,7 @@ echo "</pre>";
 				  <div class="mb-3">
 					<label for="selectCategorias" class="form-label">Categorias</label>
 					<select class="form-control" id="selectCategorias" name="id_categoria">
+						<option value="0">Selecione a Categoria</option>
 						<?php
 							$categorias = $model->findAllCategoria();
 							foreach($categorias as $categoria):
@@ -82,6 +84,8 @@ echo "</pre>";
         crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"></script>
+<script src="assets/custom.js"
         crossorigin="anonymous"></script>
 </body>
 </html>
