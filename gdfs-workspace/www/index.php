@@ -35,7 +35,7 @@ echo "</pre>";
 				<form>
 				  <div class="mb-3">
 					<label for="selectCidades" class="form-label">Cidades</label>
-					<select class="form-control" id="selectCidades">
+					<select class="form-control" id="selectCidades" name="id_cidade">
 						<?php
 							$cidades = $model->findAllCidade();
 							foreach($cidades as $cidade):
@@ -46,7 +46,7 @@ echo "</pre>";
 				  </div>
 				  <div class="mb-3">
 					<label for="selectCategorias" class="form-label">Categorias</label>
-					<select class="form-control" id="selectCategorias">
+					<select class="form-control" id="selectCategorias" name="id_categoria">
 						<?php
 							$categorias = $model->findAllCategoria();
 							foreach($categorias as $categoria):
@@ -57,11 +57,11 @@ echo "</pre>";
 				  </div>
 				  <div class="mb-3">
 					<label for="inputEndOrigem" class="form-label">Endereço de Origem</label>
-					<input type="text" class="form-control" id="inputEndOrigem">
+					<input type="text" class="form-control" id="inputEndOrigem" name="end_origem">
 				  </div>
 				  <div class="mb-3">
 					<label for="inputEndDestino" class="form-label">Endereço de Destino</label>
-					<input type="text" class="form-control" id="inputEndDestino">
+					<input type="text" class="form-control" id="inputEndDestino" name="end_destino">
 				  </div>
 				  <button type="submit" class="btn btn-primary" id="btnExecutar">Executar Estimativa</button>
 				</form>				

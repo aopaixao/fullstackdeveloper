@@ -81,7 +81,7 @@ Class PdoMysql {
 					  
 		$stmt->execute();
 		
-		$cidade = $stmt->fetchAll(\PDO::FETCH_ASSOC);;
+		$cidade = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 		return $cidade;
 	}
 	
@@ -98,8 +98,41 @@ Class PdoMysql {
 					  
 		$stmt->execute();
 		
-		$categoria = $stmt->fetchAll(\PDO::FETCH_ASSOC);;
+		$categoria = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 		return $categoria;
+	}
+	
+	public function getDadosCalculoTarifa($idCidade, $idCategoria){
+		$lPdo = $this->getInstance();
+  
+		$stmt = $lPdo->prepare("SELECT
+								vr_bandeirada, vr_hora, vr_km
+							FROM
+								cidade_categoria
+							WHERE 
+								id_cidade = $idCidade
+							AND 
+								id_categoria = $idCategoria
+								");
+					  
+		$stmt->execute();
+		
+		$dados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+		return $dados;
+	}
+	
+	public function postHistorico($vrBandeirada, $vrHora, $duracao, $vrKm, $distancia, $dataHoraAtual, $tarifa, $idCidade, $idCategoria, $endOrigem, $endDestino ){
+		$lPdo = $this->getInstance();
+		
+		$query = "INSERT INTO
+		historico_calculo (data_hora_calculo, id_cidade, id_categoria, endereco_origem, endereco_destino, distancia, duracao_minuto, valor_calculado)
+		VALUES('$dataHoraAtual', $idCidade, $idCategoria, '$endOrigem', '$endDestino', '$distancia', $duracao, '$tarifa')
+		";
+		
+		$rowsInsert = $lPdo->exec($query);   
+		
+		return $rowsInsert;
+		
 	}
 	
 }
